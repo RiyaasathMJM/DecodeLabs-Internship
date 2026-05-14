@@ -50,18 +50,41 @@ class RuleBasedChatbot:
             'exit': 'Exiting. Great work on Project 1 fundamentals!',
             'quit': 'Shutting down. Control flow mastered!',
         }
+        self.keyword_map = {
+        'hello': 'hello', 'hi': 'hi', 'hey': 'hey',
+        'morning': 'hello', 'afternoon': 'hello', 'evening': 'hello',
+        'ai': 'what is ai', 'machine learning': 'what is machine learning',
+        'ml': 'what is machine learning', 'deep learning': 'what is ai',
+        'joke': 'tell me a joke', 'funny': 'tell me a joke',
+        'project': 'what is project 1', 'decodelabs': 'what is decodelabs',
+        'hash': 'what is a hash map', 'deterministic': 'what is deterministic',
+        'sad': 'i am sad', 'confused': 'i am confused', 'stuck': 'i am stuck',
+        'thank': 'thank you',
+    }
 
         # Conversation tracking
         self.history = []
 
+    def _fuzzy_match(self, sanitized):
+        """Extended keyword matching"""
+        for keyword, intent in self.keyword_map.items():
+            if keyword in sanitized:
+                return self.responses.get(intent)
+        return None
+
     def process_input(self, user_input):
-        """IPO Model: Input Sanitization → Hash Map Lookup → Output"""
         sanitized = user_input.strip().lower()
         self.history.append({'input': user_input, 'sanitized': sanitized})
 
-        # Atomic operation: lookup + fallback
-        response = self.responses.get(sanitized, self._get_fallback())
+        # Exact match first, then fuzzy
+        response = self.responses.get(sanitized)
+        if response is None:
+            response = self._fuzzy_match(sanitized)
+        if response is None:
+            response = self._get_fallback()
+
         self.history[-1]['response'] = response
+
         return response
 
     def _get_fallback(self):
