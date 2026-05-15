@@ -2,9 +2,175 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 1: Rule-Based AI Chatbot | DecodeLabs</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Main App Container -->
+    <div class="app-container">
 
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <!-- Logo Section -->
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">◈</span>
+                    <div>
+                        <span class="logo-text">DecodeLabs</span>
+                        <span class="logo-subtitle">Batch 2026</span>
+                    </div>
+                </div>
+                <span class="project-badge">Project 1</span>
+            </div>
+
+            <!-- System Info -->
+            <div class="system-info">
+                <h3 class="section-title">Logic Engine</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Type</span>
+                        <span class="info-value highlight">Deterministic</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">System</span>
+                        <span class="info-value">Engineer v2</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Complexity</span>
+                        <span class="info-value">O(1)</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Intents</span>
+                        <span class="info-value" id="intent-count">30+</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Status</span>
+                        <span class="info-value status-online">● Online</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Hallucination</span>
+                        <span class="info-value safe">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Commands -->
+            <div class="quick-commands">
+                <h3 class="section-title">Quick Commands</h3>
+                <button class="cmd-btn" onclick="sendQuickMessage('Hello')">
+                    <span class="cmd-icon">👋</span> Greet Bot
+                </button>
+                <button class="cmd-btn" onclick="sendQuickMessage('What is AI?')">
+                    <span class="cmd-icon">🤖</span> What is AI?
+                </button>
+                <button class="cmd-btn" onclick="sendQuickMessage('Tell me a joke')">
+                    <span class="cmd-icon">😄</span> Tell a Joke
+                </button>
+                <button class="cmd-btn" onclick="sendQuickMessage('What is Project 1?')">
+                    <span class="cmd-icon">📚</span> About Project 1
+                </button>
+                <button class="cmd-btn" onclick="sendQuickMessage('What is a hash map?')">
+                    <span class="cmd-icon">🔑</span> Hash Map Concept
+                </button>
+                <button class="cmd-btn" onclick="sendQuickMessage('help')">
+                    <span class="cmd-icon">❓</span> Help Menu
+                </button>
+            </div>
+
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+                <button class="reset-btn" onclick="resetConversation()">
+                    <span>↺</span> Reset Chat
+                </button>
+                <button class="stats-btn" onclick="showStats()">
+                    <span>📊</span> View Stats
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="chat-main">
+            <!-- Chat Header -->
+            <header class="chat-header">
+                <div class="header-info">
+                    <h1 class="chat-title">Rule-Based AI Chatbot</h1>
+                    <p class="chat-subtitle">IPO Model: Input → Logic → Output | White Box Architecture</p>
+                </div>
+                <div class="header-badges">
+                    <span class="badge badge-primary">Deterministic</span>
+                    <span class="badge badge-secondary">O(1) Hash Map</span>
+                    <span class="badge badge-success">0% Hallucination</span>
+                </div>
+            </header>
+
+            <!-- Messages Container -->
+            <div class="messages-area" id="messagesContainer">
+                <!-- System Welcome Message -->
+                <div class="message-wrapper bot">
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-body">
+                        <div class="message-bubble">
+                            <div class="message-header">DecodeLabs Chatbot</div>
+                            <div class="message-text">
+                                <p>Welcome to <strong>Project 1: Rule-Based AI Chatbot</strong>!</p>
+                                <p>I am a <strong>deterministic logic engine</strong> built with:</p>
+                                <ul>
+                                    <li>✅ Hash Map architecture (not if-elif ladders)</li>
+                                    <li>✅ O(1) constant-time lookups</li>
+                                    <li>✅ 100% traceable White Box design</li>
+                                    <li>✅ Zero hallucination risk</li>
+                                </ul>
+                                <p>Try saying <code>Hello</code>, <code>What is AI?</code>, or <code>Tell me a joke</code>!</p>
+                            </div>
+                        </div>
+                        <span class="message-time">System Initiated</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="input-area">
+                <div class="input-wrapper">
+                    <input
+                        type="text"
+                        id="userInput"
+                        class="chat-input"
+                        placeholder="Type your message... (e.g., hello, what is AI?, bye)"
+                        autocomplete="off"
+                        onkeydown="handleKeyDown(event)"
+                    >
+                    <button class="send-button" onclick="sendMessage()" id="sendBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 2L11 13"></path>
+                            <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="input-footer">
+                    <span>💡 Try: hello | what is AI? | joke | bye | help</span>
+                    <span class="engine-tag">Deterministic Engine v1.0 | Batch 2026</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Stats Modal -->
+    <div class="modal" id="statsModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📊 Chatbot Statistics</h2>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body" id="statsContent">
+                Loading stats...
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
