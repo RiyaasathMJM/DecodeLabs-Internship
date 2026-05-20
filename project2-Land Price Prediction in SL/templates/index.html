@@ -2,9 +2,136 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Price Predictor | DecodeLabs Project 2</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="app-container">
 
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🏠</span>
+                <div>
+                    <h1>Property Price Predictor</h1>
+                    <p class="subtitle">Sri Lanka • Machine Learning Powered</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Input Form -->
+            <div class="form-card">
+                <h2 class="form-title">📋 Property Details</h2>
+                <p class="form-subtitle">Enter the property details to get an estimated price</p>
+
+                <form id="predictForm" onsubmit="return handleSubmit(event)">
+
+                    <!-- Property Type -->
+                    <div class="form-group">
+                        <label for="type">Property Type *</label>
+                        <select id="type" name="type" required>
+                            <option value="">Select Property Type</option>
+                            <option value="House">House</option>
+                            <option value="Land">Land</option>
+                            <option value="Apartment">Apartment</option>
+                            <option value="Commercial">Commercial</option>
+                            <option value="Villa">Villa</option>
+                            <option value="Bungalow">Bungalow</option>
+                        </select>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="form-group">
+                        <label for="location">Location *</label>
+                        <select id="location" name="location" required>
+                            <option value="">Select Location</option>
+                        </select>
+                    </div>
+
+                    <!-- Property Category -->
+                    <div class="form-group">
+                        <label for="property_category">Property Category</label>
+                        <select id="property_category" name="property_category">
+                            <option value="">Select</option>
+                            <option value="Residential">Residential</option>
+                            <option value="Commercial">Commercial</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <hr class="divider">
+
+                    <h3 class="section-title">📐 Property Details</h3>
+
+                    <!-- Bedrooms & Bathrooms (Hidden for Land) -->
+                    <div class="form-row" id="bedBathRow">
+                        <div class="form-group">
+                            <label for="total_bedrooms">Bedrooms</label>
+                            <input type="number" id="total_bedrooms" name="total_bedrooms"
+                                   min="0" max="20" value="3" placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="total_bathrooms">Bathrooms</label>
+                            <input type="number" id="total_bathrooms" name="total_bathrooms"
+                                   min="0" max="20" value="2" placeholder="0">
+                        </div>
+                    </div>
+
+                    <!-- House Size (Hidden for Land) -->
+                    <div class="form-group" id="houseSizeGroup">
+                        <label for="house_size_raw">House Size (sqft)</label>
+                        <input type="number" id="house_size_raw" name="house_size_raw"
+                               min="0" value="1500" placeholder="e.g., 1500">
+                        <small class="field-hint">Building area in square feet</small>
+                    </div>
+
+                    <!-- Land Size (Always visible) -->
+                    <div class="form-group">
+                        <label for="land_size_raw">Land Size (perches)</label>
+                        <input type="number" id="land_size_raw" name="land_size_raw"
+                               min="0" value="10" placeholder="e.g., 10">
+                        <small class="field-hint">1 perch = 272.25 sqft</small>
+                    </div>
+
+                    <!-- Total Size (Hidden - auto calculated) -->
+                    <input type="hidden" id="total_size" name="total_size" value="1500">
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="predict-btn" id="predictBtn">
+                        <span class="btn-icon">🔮</span>
+                        Predict Price
+                    </button>
+                </form>
+            </div>
+
+            <!-- Result Card -->
+            <div class="result-card" id="resultCard" style="display: none;">
+                <div class="result-header">
+                    <h2>📊 Estimated Price</h2>
+                </div>
+                <div class="result-price" id="resultPrice">-</div>
+                <div class="result-details" id="resultDetails"></div>
+            </div>
+
+            <!-- Error Card -->
+            <div class="error-card" id="errorCard" style="display: none;">
+                <div class="error-icon">⚠️</div>
+                <div class="error-message" id="errorMessage"></div>
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>DecodeLabs • Project 2 • Batch 2026</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
